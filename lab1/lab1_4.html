@@ -1,67 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <title>Простые числа</title>
-  <style>
-    body {
-      font-family: sans-serif;
-    }
-
-    #primesList {
-      margin-top: 20px;
-    }
-
-    #primesList li {
-      margin-bottom: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простые числа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #6c9be2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #5297ac;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+        .prime {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #6c9be2;
+            color: white;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
+    <h1>Простые числа</h1>
+    <div class="container">
+        <div>
+            <label for="number">Введите число n (n ≥ 2):</label>
+            <input type="number" id="number" min="2" required>
+        </div>
+        <div id="result"></div>
+    </div>
 
-  <h1>Простые числа</h1>
+    <button type="submit" id="findButton">Найти</button>
 
-  <label for="n">Введите число n:</label>
-  <input type="number" id="n" name="n" min="2" required>
-  <button onclick="findPrimes()">Найти</button>
-
-  <ul id="primesList"></ul>
-
-  <script>
-    'use strict';
-    function findPrimes() {
-      const n = parseInt(document.getElementById("n").value);
-      const primesList = document.getElementById("primesList");
-
-      primesList.innerHTML = "";
-
-      if (isNaN(n) || n < 2) {
-        alert("Пожалуйста, введите целое число большее или равное 2.");
-        return;
-      }
-
-      for (let i = 2; i <= n; i++) {
-        if (isPrime(i)) {
-          const listItem = document.createElement("li");
-          listItem.textContent = i;
-          primesList.appendChild(listItem);
+    <script>
+        "use script";
+        document.getElementById('findButton').addEventListener('click', function() {
+            const n = parseInt(document.getElementById('number').value);
+            const resultDiv = document.getElementById('result');
+            
+            if (isNaN(n) || n < 2) {
+                resultDiv.innerHTML = '<p style="color: red;">Пожалуйста, введите число больше или равное 2</p>';
+                return;
+            }
+            
+            const primes = findPrimes(n);
+            
+            if (primes.length === 0) {
+                resultDiv.innerHTML = '<p>Простых чисел в диапазоне не найдено</p>';
+            } else {
+                resultDiv.innerHTML = `
+                    <p>Простые числа от 2 до ${n}:</p>
+                    <div>${primes.map(num => `<span class="prime">${num}</span>`).join(' ')}</div>
+                    <p>Всего найдено: ${primes.length}</p>
+                `;
+            }
+        });
+        
+        function findPrimes(max) {
+            const sieve = [];
+            const primes = [];
+            
+            for (let i = 2; i <= max; ++i) {
+                if (!sieve[i]) {
+                    primes.push(i);
+                    for (let j = i * 2; j <= max; j += i) {
+                        sieve[j] = true;
+                    }
+                }
+            }
+            
+            return primes;
         }
-      }
-    }
-
-    function isPrime(num) {
-      if (num <= 1) return false;  
-      if (num <= 3) return true;   
-      if (num % 2 === 0 || num % 3 === 0) return false; 
-
-      
-      for (let i = 5; i * i <= num; i = i + 6) {
-        if (num % i === 0 || num % (i + 2) === 0)
-          return false;
-      }
-
-      return true;
-    }
-  </script>
-
+    </script>
 </body>
 </html>
