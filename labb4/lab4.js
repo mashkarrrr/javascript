@@ -56,9 +56,9 @@ class Book {
     }
 }
 
-// Функция для проверки, пуст ли объект
+// Функция для проверки, пуст ли объект, включая неперечисляемые свойства
 function isEmpty(obj) {
-    return Object.keys(obj).length === 0 && Object.getOwnPropertySymbols(obj).length === 0;
+    return Object.getOwnPropertyNames(obj).length === 0 && Object.getOwnPropertySymbols(obj).length === 0;
 }
 
 // Объект с методами для работы с классами
