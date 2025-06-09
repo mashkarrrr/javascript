@@ -71,7 +71,7 @@ try {
         books[i].show();
     }
 
-
+//Задание 4
     function isEmpty(obj) {
         if (typeof obj !== 'object' || obj === null) return true;
 
@@ -88,7 +88,7 @@ try {
     console.log("Объект 2", isEmpty(obj2));
 
 
-
+//Задание 5
     let classObject = {
         className: "open menu",
 
@@ -120,6 +120,7 @@ try {
     console.log("className после removeClass('menu'):", classObject.className);
 
 
+    //Задание 6
     let jsonString = JSON.stringify(classObject, null, 2);
     console.log("JSON строка:", jsonString);
 
@@ -127,6 +128,7 @@ try {
     console.log('Сравнение объектов из JSON:', JSON.stringify(object2) === JSON.stringify(classObject));
 
 
+    //Задание 7
     function getSecondsToday() {
         let now = new Date();
         let start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -135,6 +137,7 @@ try {
 
     console.log("Секунд с начала дня: ", getSecondsToday());
 
+    //Задание 8
     function formatDate(date) {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
