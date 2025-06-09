@@ -1,9 +1,9 @@
 // Класс Book представляет книгу с заголовком, годом публикации и ценой
 class Book {
     constructor(title, pubYear, price) {
-        this._title = title;
-        this._pubYear = pubYear;
-        this._price = price;
+        this.title = title;
+        this.pubYear = pubYear;
+        this.price = price;
     }
 
     // Геттер для получения заголовка книги
