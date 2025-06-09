@@ -2,9 +2,9 @@
 
 class Book {
     constructor(title, pubYear, price) {
-        this.title = title;
-        this.pubYear = pubYear;
-        this.price = price;
+        this._title = title;
+        this._pubYear = pubYear;
+        this._price = price;
     }
 
     get title() {
@@ -12,10 +12,10 @@ class Book {
     }
 
     set title(text) {
-        if (typeof text !== 'string' || text.trim() === '') {
-            throw new Error('Title must be a non-empty string.');
-        }
-        this._title = text.trim();
+        if (typeof text === 'string' && text.trim() !== '')
+            this._title = text.trim();
+        else
+            console.error('Title должен быть непустой строкой.');
     }
 
     get pubYear() {
@@ -23,10 +23,10 @@ class Book {
     }
 
     set pubYear(newPubYear) {
-        if (typeof newPubYear !== 'number' || newPubYear <= 0 || !Number.isInteger(newPubYear)) {
-            throw new Error('pubYear must be a positive integer.');
-        }
-        this._pubYear = newPubYear;
+        if (typeof newPubYear === 'number' && newPubYear > 0)
+            this._pubYear = newPubYear;
+        else
+            console.error('pubYear должен быть положительным числом.');
     }
 
     get price() {
@@ -34,16 +34,14 @@ class Book {
     }
 
     set price(newPrice) {
-        if (typeof newPrice !== 'number' || newPrice <= 0) {
-            throw new Error('Price must be a positive number.');
-        }
-        this._price = newPrice;
+        if (typeof newPrice === 'number' && newPrice > 0)
+            this._price = newPrice;
+        else
+            console.error('Price должен быть положительным числом.');
     }
 
     show() {
-        console.log(`Название: ${this._title},
-Год публикации: ${this._pubYear},
-Цена: ${this._price}`);
+        console.log(Название: ${this._title},\nГод публикации: ${this._pubYear},\nЦена: ${this._price});
     }
 
     static compare(book1, book2) {
@@ -51,99 +49,112 @@ class Book {
     }
 }
 
-try {
-    let book1 = new Book('1984', 1949, 1000);
-    book1.show();
-    book1.price = 1900;
-    book1.show();
-
-    console.log("Цена book1:", book1.price);
-
-    let book2 = new Book('To Kill a Mockingbird', 1960, 890);
-    book2.show();
-    let book3 = new Book('1984', 1949, 250);
-    book3.show();
-
-    let books = [book1, book2, book3];
-    books.sort(Book.compare);
-    console.log("Книги после сортировки по году издания:");
-    for (let i = 0; i < books.length; ++i) {
-        books[i].show();
-    }
 
 
-    function isEmpty(obj) {
-        if (typeof obj !== 'object' || obj === null) return true;
+let book1 = new Book('Game of Thrones', 1925, 2300);
+book1.show();
+book1.price = 1900;
+book1.show();
 
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) return false;
-        }
-        return Object.getOwnPropertySymbols(obj).length === 0;
-    }
+console.log(book1._price);
 
-    let obj1 = { [Symbol()]: true };
-    let obj2 = {};
+let book2 = new Book('Kavedra', 1960, 890);
+book2.show()
+let book3 = new Book('1984', 1949, 250);
+book3.show()
 
-    console.log("Объект 1", isEmpty(obj1));
-    console.log("Объект 2", isEmpty(obj2));
+
+let books = [book1, book2, book3];
+// console.log(books);
+books.sort(Book.compare);
+console.log("Книги после сортировки по году издания:");
+for (let i = 0; i < books.length; ++i)
+    books[i].show();
 
 
 
-    let classObject = {
-        className: "open menu",
+// Задание 4
+function isEmpty(_object) {
 
-        addClass(cls) {
-            let classes = this.className.split(' ');
-            if (!classes.includes(cls)) {
-                this.className += " " + cls;
-            }
-            return this;
-        },
+    for (let key in _object)
+        return false;
 
-        removeClass(cls) {
-            let classes = this.className.split(' ');
-            let index = classes.indexOf(cls);
-            if (index !== -1) {
-                classes.splice(index, 1);
-                this.className = classes.join(' ');
-            }
-        }
-    };
+    if (Object.getOwnPropertySymbols(_object).length > 0)
+        return false;
 
-    classObject.addClass('close');
-    console.log("className после addClass('close'):", classObject.className);
-
-    classObject.addClass('open');
-    console.log("className после addClass('open'):", classObject.className);
-
-    classObject.removeClass('menu');
-    console.log("className после removeClass('menu'):", classObject.className);
-
-
-    let jsonString = JSON.stringify(classObject, null, 2);
-    console.log("JSON строка:", jsonString);
-
-    let object2 = JSON.parse(jsonString);
-    console.log('Сравнение объектов из JSON:', JSON.stringify(object2) === JSON.stringify(classObject));
-
-
-    function getSecondsToday() {
-        let now = new Date();
-        let start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        return Math.floor((now - start) / 1000); 
-    }
-
-    console.log("Секунд с начала дня: ", getSecondsToday());
-
-    function formatDate(date) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = String(date.getFullYear()).slice(-2);
-        return `${day}.${month}.${year}`;
-    }
-        
-    const today = new Date();
-    console.log("Дата: ", formatDate(today));
-}catch (error) {
-    console.error("Произошла ошибка:", error.message);
+    return true;
 }
+
+let obj1 = { [Symbol()]: true };
+let obj2 = {};
+
+console.log("Объект 1", isEmpty(obj1));
+console.log("Объект 2", isEmpty(obj2));
+
+
+// Задание 5
+let classObject = {
+
+    className: "open menu",
+
+    addClass(cls) {
+        let classes = this.className.split(' ');
+        if (!classes.includes(cls))
+            this.className += " " + cls;
+
+        return this;
+    },
+
+    removeClass(cls) {
+        let classes = this.className.split(' ');
+        let index = classes.indexOf(cls);
+
+        if (index !== -1) {
+            classes.splice(index, 1);
+            this.className = classes.join(' ');
+        }
+    }
+}
+
+classObject.addClass('close');
+console.log(classObject.className);
+
+classObject.addClass('open');
+console.log(classObject.className);
+
+classObject.removeClass('menu');
+console.log(classObject.className);
+
+
+// Задание 6
+let jsonString = JSON.stringify(classObject, null, 2);
+console.log(jsonString);
+
+let object2 = JSON.parse(jsonString);
+console.log('Сравнение объектов из JSON:', JSON.stringify(object2) === JSON.stringify(classObject));
+
+
+// Задание 7
+function getSecondsToday() {
+
+    let now = new Date();
+    let start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    return Math.floor((now - start) / 1000) // 'cause ms
+}
+
+console.log("Секунд с начала дня: ", getSecondsToday());
+
+
+// Задание 8
+function formatDate(date) {
+
+    let day = date.getDate().toString().padStart(2, '0');
+    let month = (date.getMonth() + 1).toString().padStart(2, '0'); // month с 0
+    let year = date.getFullYear().toString().slice(-2);
+
+    return ${day}.${month}.${year};
+}
+
+let date = new Date();
+console.log(formatDate(date));
